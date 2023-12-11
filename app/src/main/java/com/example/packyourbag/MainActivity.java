@@ -41,12 +41,12 @@ public class MainActivity extends AppCompatActivity {
         //Log.e("onClick",database.mainDao().getAllSelected(false).get(0).getItemName());
 
 
-        adapter = new Adapter(this,titles,images,MainActivity.this);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this,2,GridLayoutManager.VERTICAL,false);
+        adapter = new Adapter(this, titles, images, MainActivity.this);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setAdapter(adapter);
 
-        
+
     }
 
 
@@ -55,37 +55,37 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-         if(mBackPressed+TIME_INTERVAL>System.currentTimeMillis()){
-             super.onBackPressed();
-             return;
-         }else{
-             Toast.makeText(this,"Tap back button in order to exit",Toast.LENGTH_SHORT).show();
-         }
-         mBackPressed = System.currentTimeMillis();
+        if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis()) {
+            super.onBackPressed();
+            return;
+        } else {
+            Toast.makeText(this, "Tap back button in order to exit", Toast.LENGTH_SHORT).show();
+        }
+        mBackPressed = System.currentTimeMillis();
     }
 
 
-    private void persistAppData(){
+    private void persistAppData() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = prefs.edit();
 
         database = RoomDB.getInstance(this);
         AppData appData = new AppData(database);
-        int last = prefs.getInt(AppData.LAST_VERSION,0);
-        if(!prefs.getBoolean(MyConstants.FIRST_TIME_CAMEL_CASE,false)){
+        int last = prefs.getInt(AppData.LAST_VERSION, 0);
+        if (!prefs.getBoolean(MyConstants.FIRST_TIME_CAMEL_CASE, false)) {
             appData.persistAllData();
-            editor.putBoolean(MyConstants.FIRST_TIME_CAMEL_CASE,true);
+            editor.putBoolean(MyConstants.FIRST_TIME_CAMEL_CASE, true);
             editor.commit();
-        }else if(last<AppData.NEW_VERSION){
+        } else if (last < AppData.NEW_VERSION) {
             database.mainDao().deleteAllSystemItems(MyConstants.SYSTEM_SMALL);
             appData.persistAllData();
-            editor.putInt(AppData.LAST_VERSION,AppData.NEW_VERSION);
+            editor.putInt(AppData.LAST_VERSION, AppData.NEW_VERSION);
             editor.commit();
         }
     }
 
 
-    private void addAddTitles(){
+    private void addAddTitles() {
         titles = new ArrayList<>();
         titles.add(MyConstants.BASIC_NEEDS_CAMEL_CASE);
         titles.add(MyConstants.CLOTHING_CAMEL_CASE);
@@ -101,7 +101,8 @@ public class MainActivity extends AppCompatActivity {
         titles.add(MyConstants.MY_SELECTIONS_CAMEL_CASE);
 
     }
-    private void addAllImages(){
+
+    private void addAllImages() {
         images = new ArrayList<>();
         images.add(R.drawable.p1);
         images.add(R.drawable.p2);

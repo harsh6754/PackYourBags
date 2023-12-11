@@ -1,11 +1,14 @@
 package com.example.packyourbag;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,12 +27,29 @@ public class CheckList extends AppCompatActivity {
     RecyclerView recyclerView;
     CheckListAdapter checkListAdapter;
     RoomDB database;
-    List<Items>itemsList = new ArrayList<>();
-    String header,show;
+    List<Items> itemsList = new ArrayList<>();
+    String header, show;
 
     EditText txtAdd;
     Button btnAdd;
     LinearLayout linearLayout;
+
+
+    @Override
+    public boolean onCreatePanelMenu(int featureId, @NonNull Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_one,menu);
+
+        if(MyConstants.MY_SELECTIONS.equals(header)){
+            menu.getItem(0).setVisible(false);
+            menu.getItem(2).setVisible(false);
+            menu.getItem(3).setVisible(false);
+        }else if(MyConstants.MY_LIST_CAMEL_CASE.equals(header))
+            menu.getItem(1).setVisible(false);
+
+
+        return super.onCreatePanelMenu(featureId, menu);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,23 +69,22 @@ public class CheckList extends AppCompatActivity {
         linearLayout = findViewById(R.id.linearLayout);
         database = RoomDB.getInstance(this);
 
-        if(MyConstants.FALSE_STRING.equals(show)){
+        if (MyConstants.FALSE_STRING.equals(show)) {
             linearLayout.setVisibility(View.GONE);
             itemsList = database.mainDao().getAllSelected(true);
-        }
-        else{
+        } else {
             itemsList = database.mainDao().getAll(header);
         }
         updateRecycler(itemsList);
-        btnAdd.setOnClickListener(new View.OnClickListener(){
+        btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view){
+            public void onClick(View view) {
                 String itemName = txtAdd.getText().toString();
-                if(itemName!=null && !itemName.isEmpty()){
+                if (itemName != null && !itemName.isEmpty()) {
                     addNewItem(itemName);
-                    Toast.makeText(CheckList.this,"Items Added",Toast.LENGTH_SHORT).show();
-                }else{
-                    Toast.makeText(CheckList.this,"Empty cant be Added",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CheckList.this, "Items Added", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(CheckList.this, "Empty cant be Added", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -74,11 +93,11 @@ public class CheckList extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
-       onBackPressed();
-       return true;
+        onBackPressed();
+        return true;
     }
 
-    private void addNewItem(String itemName){
+    private void addNewItem(String itemName) {
         Items item = new Items();
         item.setChecked(false);
         item.setCategory(header);
@@ -87,13 +106,14 @@ public class CheckList extends AppCompatActivity {
         database.mainDao().saveItem(item);
         itemsList = database.mainDao().getAll(header);
         updateRecycler(itemsList);
-        recyclerView.scrollToPosition(checkListAdapter.getItemCount()-1);
+        recyclerView.scrollToPosition(checkListAdapter.getItemCount() - 1);
         txtAdd.setText("");
     }
-    private void updateRecycler(List<Items> itemsList){
-       recyclerView.setHasFixedSize(true);
-       recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1,LinearLayout.VERTICAL));
-       checkListAdapter = new CheckListAdapter(CheckList.this,itemsList,database,show);
-       recyclerView.setAdapter(checkListAdapter);
+
+    private void updateRecycler(List<Items> itemsList) {
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1, LinearLayout.VERTICAL));
+        checkListAdapter = new CheckListAdapter(CheckList.this, itemsList, database, show);
+        recyclerView.setAdapter(checkListAdapter);
     }
 }
