@@ -13,7 +13,7 @@
     <CheckBox
         android:id="@+id/checkbox"
         android:layout_width="0dp"
-        android:layout_height="106dp"
+        android:layout_height="50dp"
         android:layout_gravity="center"
         android:layout_weight="5"
         android:text="This is just for test"
@@ -21,8 +21,8 @@
 
     <Button
         android:id="@+id/btnDelete"
-        android:layout_width="40dp"
-        android:layout_height="85dp"
+        android:layout_width="35dp"
+        android:layout_height="55dp"
         android:layout_gravity="center"
         android:layout_weight="0.7"
         android:background="@drawable/delete_white" />

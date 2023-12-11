@@ -8,9 +8,9 @@
     tools:context=".CheckList">
 
 <androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/recyclerView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    androidx.id="@+id/recycleView"
     androidx.layout_marginBottom="60dp"/>
 
 
@@ -24,6 +24,7 @@
 
 
         <EditText
+            android:id="@+id/txtAdd"
             android:layout_width="0dp"
             android:layout_weight="5"
             android:layout_height="wrap_content"
@@ -33,6 +34,7 @@
             android:textStyle="bold|italic"/>
         
         <Button
+            android:id="@+id/btnDelete"
             android:layout_width="0dp"
             android:layout_weight="0.7"
             android:layout_height="wrap_content"

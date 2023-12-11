@@ -60,7 +60,7 @@ public class CheckListAdapter extends RecyclerView.Adapter<CheckListViewHolder>{
           holder.layout.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.border_one));
       }else{
           if(itemsList.get(position).getChecked()){
-              holder.layout.setBackgroundColor(Color.parseColor("8e546f"));
+              holder.layout.setBackgroundColor(Color.parseColor("#8e546f"));
           }else{
               holder.layout.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.border_one));
           }
