@@ -74,17 +74,43 @@ public class CheckList extends AppCompatActivity {
         return true;
     }
 
-//   @Override
-//  public boolean onOptionsItemSelected(@NonNull MenuItem item){
-//      Intent intent = new Intent(this,CheckList.class);
-//       AppData appData = new AppData(database,this);
+//    @Override
+//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+//            Intent intent = new Intent(this,CheckList.class);
+//            AppData appData = new AppData(database,this);
 //
-//       switch (item.getItemId()){
-//          case R.id.btnAboutUs:
-//
-//       }
+//            switch (item.getItemId()){
+//                case R.id.btnMySelections:
+//                    intent.putExtra(MyConstants.HEADER_SMALL,MyConstants.MY_SELECTIONS);
+//                    intent.putExtra(MyConstants.SHOW_SMALL,MyConstants.FALSE_STRING);
+//                    startActivityForResult(intent,101);
+//                    return true;
+//            }
 //        return super.onOptionsItemSelected(item);
-//   }
+//    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        Intent intent = new Intent(this, CheckList.class);
+        AppData appData = new AppData(database, this);
+
+        if (item.getItemId() == R.id.btnMySelections) {
+            intent.putExtra(MyConstants.HEADER_SMALL, MyConstants.MY_SELECTIONS);
+            intent.putExtra(MyConstants.SHOW_SMALL, MyConstants.FALSE_STRING);
+            startActivityForResult(intent, 101);
+            return true;
+        }
+
+        else if (item.getItemId() == R.id.btnCustomList){
+            intent.putExtra(MyConstants.HEADER_SMALL, MyConstants.MY_LIST_CAMEL_CASE);
+            intent.putExtra(MyConstants.SHOW_SMALL, MyConstants.TRUE_STRING);
+            startActivity(intent);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
