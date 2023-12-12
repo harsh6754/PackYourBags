@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -107,6 +109,52 @@ public class CheckList extends AppCompatActivity {
             startActivity(intent);
             return true;
         }
+
+        else if (item.getItemId() == R.id.btnDeleteDefault){
+           new AlertDialog.Builder(this)
+                   .setTitle("Delete Default data")
+                   .setMessage("Are you sure?\n\nAs this will delete the data provided by (Pack Your Bags) while installing the application.")
+                   .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                       @Override
+                       public void onClick(DialogInterface dialogInterface, int i) {
+                            appData.persistDataByCategory(header,true);
+                            itemsList = database.mainDao().getAll(header);
+                            updateRecycler(itemsList);
+                       }
+                   }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                       @Override
+                       public void onClick(DialogInterface dialogInterface, int i) {
+
+                       }
+                   }).setIcon(R.drawable.ic_warning)
+                   .show();
+           return true;
+        }
+
+        else if(item.getItemId() == R.id.btnReset){
+            new AlertDialog.Builder(this)
+                    .setTitle("Reset to default")
+                    .setMessage("Are you Sure?\n\nAs this will load the default data provided by(Pack Your Bags) and will delete the custom data you have added in("+header+")")
+                    .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                             appData.persistDataByCategory(header,false);
+                             itemsList  = database.mainDao().getAll(header);
+                             updateRecycler(itemsList);
+                        }
+                    }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    }).setIcon(R.drawable.ic_warning)
+                    .show();
+            return true;
+
+        }
+
+
+
 
         return super.onOptionsItemSelected(item);
     }
