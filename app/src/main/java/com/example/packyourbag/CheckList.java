@@ -1,6 +1,7 @@
 package com.example.packyourbag;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
@@ -16,7 +17,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+
 import androidx.appcompat.widget.SearchView;
+
 import android.widget.Toast;
 
 import com.example.packyourbag.Adapter.CheckListAdapter;
@@ -43,27 +46,28 @@ public class CheckList extends AppCompatActivity {
     @Override
     public boolean onCreatePanelMenu(int featureId, @NonNull Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_one,menu);
+        inflater.inflate(R.menu.menu_one, menu);
 
-        if(MyConstants.MY_SELECTIONS.equals(header)){
+        if (MyConstants.MY_SELECTIONS.equals(header)) {
             menu.getItem(0).setVisible(false);
             menu.getItem(2).setVisible(false);
             menu.getItem(3).setVisible(false);
-        }else if(MyConstants.MY_LIST_CAMEL_CASE.equals(header))
+        } else if (MyConstants.MY_LIST_CAMEL_CASE.equals(header))
             menu.getItem(1).setVisible(false);
 
         MenuItem menuItem = menu.findItem(R.id.btnSearch);
         SearchView searchView = (SearchView) menuItem.getActionView();
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public boolean onQueryTextSubmit(String query){
+            public boolean onQueryTextSubmit(String query) {
                 return false;
             }
+
             @Override
-            public boolean onQueryTextChange(String newText){
+            public boolean onQueryTextChange(String newText) {
                 List<Items> mFinalList = new ArrayList<>();
-                for(Items items:itemsList){
-                    if(items.getItemName().toLowerCase().startsWith(newText.toLowerCase())){
+                for (Items items : itemsList) {
+                    if (items.getItemName().toLowerCase().startsWith(newText.toLowerCase())) {
                         mFinalList.add(items);
                     }
                 }
@@ -101,46 +105,40 @@ public class CheckList extends AppCompatActivity {
             intent.putExtra(MyConstants.SHOW_SMALL, MyConstants.FALSE_STRING);
             startActivityForResult(intent, 101);
             return true;
-        }
-
-        else if (item.getItemId() == R.id.btnCustomList){
+        } else if (item.getItemId() == R.id.btnCustomList) {
             intent.putExtra(MyConstants.HEADER_SMALL, MyConstants.MY_LIST_CAMEL_CASE);
             intent.putExtra(MyConstants.SHOW_SMALL, MyConstants.TRUE_STRING);
             startActivity(intent);
             return true;
-        }
-
-        else if (item.getItemId() == R.id.btnDeleteDefault){
-           new AlertDialog.Builder(this)
-                   .setTitle("Delete Default data")
-                   .setMessage("Are you sure?\n\nAs this will delete the data provided by (Pack Your Bags) while installing the application.")
-                   .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                       @Override
-                       public void onClick(DialogInterface dialogInterface, int i) {
-                            appData.persistDataByCategory(header,true);
-                            itemsList = database.mainDao().getAll(header);
-                            updateRecycler(itemsList);
-                       }
-                   }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                       @Override
-                       public void onClick(DialogInterface dialogInterface, int i) {
-
-                       }
-                   }).setIcon(R.drawable.ic_warning)
-                   .show();
-           return true;
-        }
-
-        else if(item.getItemId() == R.id.btnReset){
+        } else if (item.getItemId() == R.id.btnDeleteDefault) {
             new AlertDialog.Builder(this)
-                    .setTitle("Reset to default")
-                    .setMessage("Are you Sure?\n\nAs this will load the default data provided by(Pack Your Bags) and will delete the custom data you have added in("+header+")")
+                    .setTitle("Delete Default data")
+                    .setMessage("Are you sure?\n\nAs this will delete the data provided by (Pack Your Bags) while installing the application.")
                     .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                             appData.persistDataByCategory(header,false);
-                             itemsList  = database.mainDao().getAll(header);
-                             updateRecycler(itemsList);
+                            appData.persistDataByCategory(header, true);
+                            itemsList = database.mainDao().getAll(header);
+                            updateRecycler(itemsList);
+                        }
+                    }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    }).setIcon(R.drawable.ic_warning)
+                    .show();
+            return true;
+        } else if (item.getItemId() == R.id.btnReset) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Reset to default")
+                    .setMessage("Are you Sure?\n\nAs this will load the default data provided by(Pack Your Bags) and will delete the custom data you have added in(" + header + ")")
+                    .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            appData.persistDataByCategory(header, false);
+                            itemsList = database.mainDao().getAll(header);
+                            updateRecycler(itemsList);
                         }
                     }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                         @Override
@@ -151,14 +149,29 @@ public class CheckList extends AppCompatActivity {
                     .show();
             return true;
 
+        } else if (item.getItemId() == R.id.btnAboutUs) {
+            intent = new Intent(this, AboutUs.class);
+            startActivity(intent);
+            return true;
+
+        } else if (item.getItemId() == R.id.btnExit) {
+            this.finishAffinity();
+            Toast.makeText(this, "Pack Your Bags\n Thank You for Using This Application\n Again Use It", Toast.LENGTH_SHORT).show();
+            return true;
+
+        } else {
+            return super.onOptionsItemSelected(item);
         }
-
-
-
-
-        return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 101){
+            itemsList = database.mainDao().getAll(header);
+            updateRecycler(itemsList);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
