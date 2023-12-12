@@ -9,14 +9,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import androidx.appcompat.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.packyourbag.Adapter.CheckListAdapter;
 import com.example.packyourbag.Constants.MyConstants;
+import com.example.packyourbag.Data.AppData;
 import com.example.packyourbag.Database.RoomDB;
 import com.example.packyourbag.Models.Items;
 
@@ -47,9 +50,41 @@ public class CheckList extends AppCompatActivity {
         }else if(MyConstants.MY_LIST_CAMEL_CASE.equals(header))
             menu.getItem(1).setVisible(false);
 
+        MenuItem menuItem = menu.findItem(R.id.btnSearch);
+        SearchView searchView = (SearchView) menuItem.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
+            @Override
+            public boolean onQueryTextSubmit(String query){
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText){
+                List<Items> mFinalList = new ArrayList<>();
+                for(Items items:itemsList){
+                    if(items.getItemName().toLowerCase().startsWith(newText.toLowerCase())){
+                        mFinalList.add(items);
+                    }
+                }
+                updateRecycler(mFinalList);
+                return false;
+            }
+        });
 
-        return super.onCreatePanelMenu(featureId, menu);
+
+        return true;
     }
+
+//   @Override
+//  public boolean onOptionsItemSelected(@NonNull MenuItem item){
+//      Intent intent = new Intent(this,CheckList.class);
+//       AppData appData = new AppData(database,this);
+//
+//       switch (item.getItemId()){
+//          case R.id.btnAboutUs:
+//
+//       }
+//        return super.onOptionsItemSelected(item);
+//   }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
