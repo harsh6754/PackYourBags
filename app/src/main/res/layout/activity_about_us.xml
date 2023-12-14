@@ -162,6 +162,61 @@
 
         </LinearLayout>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="#B8B8B8"
+            android:padding="5dp"
+            android:text="Service we provide :"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="20dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="#9CF69A"
+            android:padding="5dp"
+            android:text="Pack Your Bags \n\n Developed a Application that allow User to note Basic Need Items \n\n Application is built using Java,XML,\n\n Users can create personalized checklists to ensure all essential items areincluded, reducing the likelihood of forgetting crucial belongings during travel."
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="20dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="#28FFDF"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:layout_weight="0.08"
+                android:paddingStart="10dp"
+                android:src="@drawable/ic_logo" />
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="0.3"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
 
     </LinearLayout>
 
